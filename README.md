@@ -25,12 +25,23 @@ SERVER_SHARED_FILES = "./SharedFiles"
 ```
 
 ### Running the Program
+
 To run the program, start the `server.py` first then clients can connect via launching the `client.py` file.
 Make sure to change the `-p` option it will default to `8000` if not provided.
 ```bash
 py server.py -p port_number
 ```
-   The username (`-u`) and port_number (`-p`) are required options, you cannot join the server without providing them, the hostname (`-h`) will default to `127.0.0.1`
+The username (`-u`) and port_number (`-p`) are required options, you cannot join the server without providing them, the hostname (`-h`) will default to `127.0.0.1`
 ```bash
 py client.py -u username -h hostname -p port_number
 ```
+
+## Commands
+Whilst in the application you can enter commands into both sides of the terminal (_server_ and _client_).
+### Client
+All commands in the _client_ side start with a `/` character
+ - `/help` - Display a list of all client-side commands
+ - `/exit` - Close instance of _client_ and leave the server
+ - `/whisper <username> <message>` - Send a message to one specific user
+ - `/files` - List all the files in the _SharedFiles_ folder, and their size in bytes
+ - `/download <filename>` - Download the file with name `<filename>` and save to `./<username>`
