@@ -3,7 +3,7 @@ Created in Python 3.12.0, this application comes with a server and client compon
 
 ## Setup
 1. Clone the repository:
-```git
+```bash
 git clone "https://github.com/Jamwilltim/IM-App"
 ```
 2. Create a SharedFiles folder in the root directory of your project and populate it with the files you want available to be shared.
