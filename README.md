@@ -11,10 +11,13 @@ git clone "https://github.com/Jamwilltim/IM-App"
 2. Create a SharedFIles folder in the root directory of your project
 ```
 .
-|--SharedFIles
-|  |-- example.txt
-|  |-- exapmle.jpg
-|  |-- etc
-|--.gitignore
-|--README.md
+|__SharedFIles
+|  |__example.txt
+|  |__exapmle.jpg
+|  |__etc
+|__.gitignore
+|__README.md
+|__client.py
+|__colors.py
+|__server.py
 ```
