@@ -29,7 +29,7 @@ def handle_args():
 
     server_port = int(server_port)  # Convert the port to an integer
 
-    user_dir = os.path.join(os.getcwd(), "Users", username)
+    user_dir = os.path.join(os.getcwd(), username)
 
     if not os.path.exists(user_dir):
         os.makedirs(user_dir)
@@ -96,6 +96,9 @@ def run_client(username, server_port, server_ip, user_dir):
             if message == "/exit":  # Exit the program if the user types /exit
                 client.send(message.encode())
                 break
+            if message == "/wave":
+                client.send("\U0001F44B".encode())
+                continue
             # Clear the input line and move cursor up
             sys.stdout.write(f"\r{CLEAR_LINE}{CURSOR_UP}{CLEAR_LINE}")
             # Print the formatted message

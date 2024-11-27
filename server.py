@@ -144,7 +144,7 @@ def handle_command(request, client_socket, username):
         # Remove user from active users
         del users[username]
         return True  # True to break the loop
-    elif request.startswith("/whisper") or request.startswith("/w"):
+    elif request.startswith("/whisper"):
         parts = request.split(" ", 2)
         if len(parts) >= 3:
             target_username = parts[1]
