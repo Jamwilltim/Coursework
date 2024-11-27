@@ -25,5 +25,8 @@ SERVER_SHARED_FILES = "./SharedFiles"
 ```
 4. To run the program, start the `server.py` first then clients can connect via launching the `client.py` file.
 ```bash
-py server.py -p <port_number>
+py server.py -p port_number
+```
+```bash
+py client.py -u username -h hostname -p port_number
 ```
