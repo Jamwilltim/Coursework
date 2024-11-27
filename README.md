@@ -38,10 +38,18 @@ py client.py -u username -h hostname -p port_number
 
 ## Commands
 Whilst in the application you can enter commands into both sides of the terminal (_server_ and _client_).
+
 ### Client
+
 All commands in the _client_ side start with a `/` character
  - `/help` - Display a list of all client-side commands
  - `/exit` - Close instance of _client_ and leave the server
+ - `/users` - List all of the users currently logged onto the server
+ - `/wave` - Sends a waving emoji (👋) to everyone in the server
  - `/whisper <username> <message>` - Send a message to one specific user
  - `/files` - List all the files in the _SharedFiles_ folder, and their size in bytes
  - `/download <filename>` - Download the file with name `<filename>` and save to `./<username>`
+
+### Server
+
+The only command on the server side is `quit` which disconnects all clients from the server and then quits the application
