@@ -23,8 +23,10 @@ git clone "https://github.com/Jamwilltim/IM-App"
 ```python
 SERVER_SHARED_FILES = "./SharedFiles"
 ```
-4. To run the program, start the `server.py` first then clients can connect via launching the `client.py` file.
-   Make sure to change the `-p` option it will default to `8000` if not provided.
+
+### Running the Program
+To run the program, start the `server.py` first then clients can connect via launching the `client.py` file.
+Make sure to change the `-p` option it will default to `8000` if not provided.
 ```bash
 py server.py -p port_number
 ```
