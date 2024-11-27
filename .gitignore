@@ -1,7 +1,5 @@
 __pycache__
-
+.gitignore
 Networks_Assignment_2024.pdf
-
-Users/**
+README.txt
 SharedFiles/**
-
