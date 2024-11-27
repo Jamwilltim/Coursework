@@ -24,9 +24,11 @@ git clone "https://github.com/Jamwilltim/IM-App"
 SERVER_SHARED_FILES = "./SharedFiles"
 ```
 4. To run the program, start the `server.py` first then clients can connect via launching the `client.py` file.
+Make sure to change the `-p` option it will default to `8000` if not provided.
 ```bash
 py server.py -p port_number
 ```
+The username (`-u`) and port_number (`-p`) are required options, you cannot join the server without providing them, the hostname (`-h`) will default to `127.0.0.1`
 ```bash
 py client.py -u username -h hostname -p port_number
 ```
