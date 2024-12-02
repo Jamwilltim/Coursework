@@ -2,10 +2,17 @@ import socket
 import threading
 import os
 import sys
-import colors
 from getopt import getopt
 
 os.system("color")
+
+# Colors for terminal output
+BRIGHT_RED = "\033[91m"
+BRIGHT_BLUE = "\033[94m"
+BRIGHT_CYAN = "\033[96m"
+BRIGHT_GREEN = "\033[92m"
+MAGENTA = "\033[35m"
+RESET = "\033[0m"
 
 # ANSI escape sequences for terminal manipulation
 CLEAR_LINE = "\033[K"  # Clear from cursor to end of line
@@ -21,10 +28,10 @@ def handle_args():
 
     # Make sure that the required arguments are provided
     if not username:
-        print(f"{colors.BRIGHT_RED}Error: Username is required{colors.RESET}")
+        print(f"{BRIGHT_RED}Error: Username is required{RESET}")
         sys.exit(1)  # If a required argument is missing, exit the program
     if not server_port:
-        print(f"{colors.BRIGHT_RED}Error: Server port is required{colors.RESET}")
+        print(f"{BRIGHT_RED}Error: Server port is required{RESET}")
         sys.exit(1)  # If a required argument is missing, exit the program
 
     server_port = int(server_port)  # Convert the port to an integer
@@ -44,7 +51,7 @@ def run_client(username, server_port, server_ip, user_dir):
     try:
         client.connect((server_ip, server_port))
     except Exception as e:
-        print(f"{colors.BRIGHT_RED}Error: {e}{colors.RESET}")
+        print(f"{BRIGHT_RED}Error: {e}{RESET}")
         sys.exit(1)
 
     # Function to receive messages from the server
@@ -54,9 +61,7 @@ def run_client(username, server_port, server_ip, user_dir):
                 message = client.recv(1024).decode()
                 if message == "Server is closing":
                     sys.stdout.write(f"\r{CLEAR_LINE}")
-                    print(
-                        f"{colors.BRIGHT_BLUE}Server is closing. Disconnecting...{colors.RESET}"
-                    )
+                    print(f"{BRIGHT_BLUE}Server is closing. Disconnecting...{RESET}")
                     client.close()
                     os._exit(0)
                     break
@@ -67,10 +72,7 @@ def run_client(username, server_port, server_ip, user_dir):
                     sys.stdout.write(f"\r{CLEAR_LINE}")
                     print(message)
                     # Don't reprint the input prompt if the connection is closed
-                    if (
-                        message
-                        == f"{colors.BRIGHT_BLUE}Connection closed{colors.RESET}"
-                    ):
+                    if message == f"{BRIGHT_BLUE}Connection closed{RESET}":
                         break
                     # Reprint the input prompt
                     sys.stdout.write("> ")
@@ -102,12 +104,12 @@ def run_client(username, server_port, server_ip, user_dir):
             # Clear the input line and move cursor up
             sys.stdout.write(f"\r{CLEAR_LINE}{CURSOR_UP}{CLEAR_LINE}")
             # Print the formatted message
-            print(f"{colors.MAGENTA}You:{colors.RESET} {message}")
+            print(f"{MAGENTA}You:{RESET} {message}")
             client.send(message.encode())
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        print(f"{colors.BRIGHT_RED}Closing socket{colors.RESET}")
+        print(f"{BRIGHT_RED}Closing socket{RESET}")
         client.close()
         receive_thread.join(timeout=1.0)  # Add timeout to prevent hanging
 
@@ -117,9 +119,7 @@ def download_files(client, user_dir):
         # Receive the file size
         file_size = int(client.recv(1024).decode())
         filename = client.recv(1024).decode()
-        print(
-            f"{colors.BRIGHT_CYAN}Downloading file {filename} ({file_size} bytes){colors.RESET}"
-        )
+        print(f"{BRIGHT_CYAN}Downloading file {filename} ({file_size} bytes){RESET}")
 
         file_path = os.path.join(user_dir, filename)
 
@@ -143,7 +143,7 @@ def download_files(client, user_dir):
         with open(file_path, "wb") as file:
             file.write(file_bytes)
 
-        print(f"\n{colors.BRIGHT_GREEN}File received: {filename}{colors.RESET}")
+        print(f"\n{BRIGHT_GREEN}File received: {filename}{RESET}")
 
     except Exception as e:
         print(f"Error downloading file: {e}")

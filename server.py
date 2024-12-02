@@ -2,12 +2,22 @@ import socket
 import threading
 import sys
 import os
-import colors
 from getopt import getopt
 
 os.system("color")
 
 SERVER_SHARED_FILES = "./SharedFiles"
+
+# Colors for terminal output
+RED = "\033[31m"
+YELLOW = "\033[33m"
+MAGENTA = "\033[35m"
+BRIGHT_RED = "\033[91m"
+BRIGHT_GREEN = "\033[92m"
+BRIGHT_BLUE = "\033[94m"
+BRIGHT_CYAN = "\033[96m"
+WHITE = "\033[97m"
+RESET = "\033[0m"
 
 
 # Create user class
@@ -49,7 +59,7 @@ def start_server(server_port):
         while True:
             client_socket, addr = server.accept()  # Accept the connection
             print(
-                f"{colors.BRIGHT_BLUE}Connection established with {addr[0]}:{addr[1]}{colors.RESET}"
+                f"{BRIGHT_BLUE}Connection established with {addr[0]}:{addr[1]}{RESET}"
             )
 
             add_user(client_socket, addr)
@@ -73,7 +83,7 @@ def listen_for_quit(server):
                 user.socket.sendall("Server is closing".encode())
                 user.socket.close()
             server.close()
-            print(f"{colors.BRIGHT_RED}Server closed{colors.RESET}")
+            print(f"{BRIGHT_RED}Server closed{RESET}")
             os._exit(0)
 
 
@@ -85,11 +95,11 @@ def add_user(client_socket, addr):
 
     # Send welcome message to the client
     client_socket.send(
-        f"{colors.BRIGHT_BLUE}Welcome to the chatroom {username}\n{colors.BRIGHT_CYAN}Enter messages, type '/help' for commands list, or type '/exit' to leave{colors.RESET}".encode()
+        f"{BRIGHT_BLUE}Welcome to the chatroom {username}\n{BRIGHT_CYAN}Enter messages, type '/help' for commands list, or type '/exit' to leave{RESET}".encode()
     )
 
     # Broadcast the new connection to all users
-    broadcast_message(f"{username} has connected", username, colors.BRIGHT_BLUE)
+    broadcast_message(f"{username} has connected", username, BRIGHT_BLUE)
 
 
 def handle_client(client_socket, addr):
@@ -117,7 +127,7 @@ def handle_client(client_socket, addr):
             broadcast_message(
                 f"{username} has left",
                 username,
-                colors.BRIGHT_RED,
+                BRIGHT_RED,
             )
             if username in users:
                 del users[username]  # Remove user from active users
@@ -126,20 +136,18 @@ def handle_client(client_socket, addr):
     finally:
         client_socket.close()
         print(
-            f"{colors.MAGENTA}Connection to client ({addr[0]}:{addr[1]}) closed ({username}){colors.RESET}"
+            f"{MAGENTA}Connection to client ({addr[0]}:{addr[1]}) closed ({username}){RESET}"
         )
 
 
 # Handle the command from the client, returns True if the command is to exit the chatroom and False to keep the chatroom open for the client
 def handle_command(request, client_socket, username):
     if request == "/exit":
-        client_socket.send(
-            f"{colors.BRIGHT_BLUE}Connection closed{colors.RESET}".encode()
-        )
+        client_socket.send(f"{BRIGHT_BLUE}Connection closed{RESET}".encode())
         broadcast_message(
             f"{username} has left",
             username,
-            colors.BRIGHT_RED,
+            BRIGHT_RED,
         )
         # Remove user from active users
         del users[username]
@@ -152,7 +160,7 @@ def handle_command(request, client_socket, username):
             whisper_message(username, target_username, message)
         else:
             client_socket.send(
-                f"{colors.BRIGHT_RED}Invalid whisper command\n{colors.WHITE}/whisper <username> <message>{colors.RESET}".encode()
+                f"{BRIGHT_RED}Invalid whisper command\n{WHITE}/whisper <username> <message>{RESET}".encode()
             )
         return False  # False to continue the loop
     elif request == "/files":
@@ -165,17 +173,17 @@ def handle_command(request, client_socket, username):
             send_file(client_socket, filename)
         else:
             client_socket.send(
-                f"{colors.BRIGHT_RED}Invalid download command\n{colors.WHITE}/download <filename>{colors.RESET}".encode()
+                f"{BRIGHT_RED}Invalid download command\n{WHITE}/download <filename>{RESET}".encode()
             )
         return False  # False to continue the loop
     elif request == "/users":
         client_socket.send(
-            f"{colors.BRIGHT_CYAN}Active users ({len(users)}): {colors.YELLOW}{', '.join(users.keys())}{colors.RESET}".encode()
+            f"{BRIGHT_CYAN}Active users ({len(users)}): {YELLOW}{', '.join(users.keys())}{RESET}".encode()
         )
         return False
     elif request == "/help":
         client_socket.send(
-            f"{colors.BRIGHT_CYAN}Commands:\n{colors.WHITE}/users{colors.BRIGHT_CYAN} - List all active users in the chatroom\n{colors.WHITE}/whisper <username> <message>{colors.BRIGHT_CYAN} - Send a private message to a user\n{colors.WHITE}/files{colors.BRIGHT_CYAN} - List the number and filenames in the SharedFiles folder\n{colors.WHITE}{colors.WHITE}/download <filename>{colors.BRIGHT_CYAN} - Download a file, will be saved to user directory\n{colors.WHITE}/exit{colors.BRIGHT_CYAN} - Leave the chatroom{colors.RESET}".encode()
+            f"{BRIGHT_CYAN}Commands:\n{WHITE}/users{BRIGHT_CYAN} - List all active users in the chatroom\n{WHITE}/whisper <username> <message>{BRIGHT_CYAN} - Send a private message to a user\n{WHITE}/files{BRIGHT_CYAN} - List the number and filenames in the SharedFiles folder\n{WHITE}{WHITE}/download <filename>{BRIGHT_CYAN} - Download a file, will be saved to user directory\n{WHITE}/exit{BRIGHT_CYAN} - Leave the chatroom{RESET}".encode()
         )  # Formatted help message
         return False  # False to continue the loop
 
@@ -185,7 +193,7 @@ def whisper_message(sender_username, target_username, message):
         target_user = users[target_username]
         try:
             target_user.socket.sendall(
-                f"{colors.BRIGHT_GREEN}[Whisper from {sender_username}]:{colors.RESET} {message}".encode()  # Send the encoded message along with a whisper tag showing who the whisper was from
+                f"{BRIGHT_GREEN}[Whisper from {sender_username}]:{RESET} {message}".encode()  # Send the encoded message along with a whisper tag showing who the whisper was from
             )
             print(
                 f"Whisper from {sender_username} to {target_username}: {message}"
@@ -196,7 +204,7 @@ def whisper_message(sender_username, target_username, message):
         sender_user = users[sender_username]
         try:
             sender_user.socket.sendall(
-                f"{colors.BRIGHT_RED}User {target_username} not found{colors.RESET}".encode()
+                f"{BRIGHT_RED}User {target_username} not found{RESET}".encode()
             )  # Send the correct error to the user that sent the whisper, detailing that the user they tried to whisper to does not exist
         except Exception as e:
             print(f"Error sending error message to {sender_username}: {e}")
@@ -206,7 +214,7 @@ def whisper_message(sender_username, target_username, message):
 def broadcast_message(message, current_user=None, color=None, system=False):
     if system:
         if color:
-            message = f"{color}{message}{colors.RESET}"
+            message = f"{color}{message}{RESET}"
             for user in users.values():
                 user.socket.sendall(message.encode())
         else:
@@ -217,10 +225,10 @@ def broadcast_message(message, current_user=None, color=None, system=False):
             continue
         try:
             if color:
-                user.socket.sendall(f"{color}{message}{colors.RESET}".encode())
+                user.socket.sendall(f"{color}{message}{RESET}".encode())
             else:
                 user.socket.sendall(
-                    f"{colors.YELLOW}{current_user}:{colors.RESET} {message}".encode()
+                    f"{YELLOW}{current_user}:{RESET} {message}".encode()
                 )
         except Exception as e:
             print(f"Error sending message to {user.username}: {e}")
@@ -238,16 +246,14 @@ def list_files(client_socket):
                 ]
             )
             client_socket.send(
-                f"{colors.BRIGHT_CYAN}Shared files ({len(files)} files):\n{colors.WHITE}{files_list}{colors.RESET}".encode()
+                f"{BRIGHT_CYAN}Shared files ({len(files)} files):\n{WHITE}{files_list}{RESET}".encode()
             )
         else:
             client_socket.send(
-                f"{colors.BRIGHT_RED}No files found in the shared folder{colors.RESET}".encode()
+                f"{BRIGHT_RED}No files found in the shared folder{RESET}".encode()
             )
     except Exception as e:
-        client_socket.send(
-            f"{colors.BRIGHT_RED}Error listing files: {e}{colors.RESET}".encode()
-        )
+        client_socket.send(f"{BRIGHT_RED}Error listing files: {e}{RESET}".encode())
 
 
 def send_file(client_socket, filename):
@@ -264,11 +270,9 @@ def send_file(client_socket, filename):
             client_socket.send(b"<END>")
 
     except FileNotFoundError:
-        client_socket.send(f"{colors.BRIGHT_RED}File not found{colors.RESET}".encode())
+        client_socket.send(f"{BRIGHT_RED}File not found{RESET}".encode())
     except Exception as e:
-        client_socket.send(
-            f"{colors.BRIGHT_RED}Error sending file: {e}{colors.RESET}".encode()
-        )
+        client_socket.send(f"{BRIGHT_RED}Error sending file: {e}{RESET}".encode())
 
 
 if __name__ == "__main__":
