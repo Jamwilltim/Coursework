@@ -1,5 +1,8 @@
-__pycache__
-Networks_Assignment_2024.pdf
+# PDFs
+*.pdf
+
+# README
 README.txt
-README.txt
+
+# SharedFiles Folder
 SharedFiles/**

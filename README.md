@@ -25,7 +25,7 @@ git clone "https://github.com/Jamwilltim/IM-App"
 |__server.py
 ```
 
-3. Make sure the `SERVER_SHARED_FILES` environment variable is correctly set:
+3. Make sure the `SHAREDFILES` environment variable is correctly set:
 
 **Powershell:**
 
