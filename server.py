@@ -6,7 +6,12 @@ from getopt import getopt
 
 os.system("color")
 
-SERVER_SHARED_FILES = "./SharedFiles"
+SERVER_SHARED_FILES = os.getenv(
+    "SHAREDFILES", "SharedFiles"
+)  # Folder to store shared files
+
+if not os.path.exists(SERVER_SHARED_FILES):
+    os.makedirs(SERVER_SHARED_FILES)
 
 # Colors for terminal output
 RED = "\033[31m"

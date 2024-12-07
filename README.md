@@ -25,10 +25,18 @@ git clone "https://github.com/Jamwilltim/IM-App"
 |__server.py
 ```
 
-3. Make sure the `SERVER_SHARED_FILES` variable is correctly set (at the top of the `server.py` file, it defaults to:
+3. Make sure the `SERVER_SHARED_FILES` environment variable is correctly set:
 
-```python
-SERVER_SHARED_FILES = "./SharedFiles"
+**Powershell:**
+
+```shell
+$env:SHAREDFILES="./SharedFiles"
+```
+
+**Command Prompt**
+
+```shell
+set SHAREDFILES=./SharedFiles
 ```
 
 ### Running the Program
