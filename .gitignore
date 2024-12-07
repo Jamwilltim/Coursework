@@ -1,6 +1,9 @@
 # PDFs
 *.pdf
 
+# ZIP files
+*.zip
+
 # README
 README.txt
 
